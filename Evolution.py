@@ -86,7 +86,46 @@ def run_evolution(field, num_iterations):
         im.set_array(field.grid)
         plt.title(f"Iteration: {i+1}")
         plt.pause(0.5)
-    
+
+
+score_matrix = {
+    ('Master', 'Master'): 296,
+    ('Master', 'Slave'): 477,
+    ('Master', 'Helper'): 106,
+    ('Master', 'Reciever'): 111,
+    ('Master', 'Tit-For-Tat'): 106,
+    ('Master', 'Always Defect'): 99,
+    ('Slave', 'Master'): 17,
+    ('Slave', 'Slave'): 200,
+    ('Slave', 'Helper'): 106,
+    ('Slave', 'Reciever'): 111,
+    ('Slave', 'Tit-For-Tat'): 106,
+    ('Slave', 'Always Defect'): 99,
+    ('Helper', 'Master'): 101,
+    ('Helper', 'Slave'): 101,
+    ('Helper', 'Helper'): 300,
+    ('Helper', 'Reciever'): 6,
+    ('Helper', 'Tit-For-Tat'): 300,
+    ('Helper', 'Always Defect'): 98,
+    ('Reciever', 'Master'): 101,
+    ('Reciever', 'Slave'): 101,
+    ('Reciever', 'Helper'): 496,
+    ('Reciever', 'Reciever'): 298,
+    ('Reciever', 'Tit-For-Tat'): 299,
+    ('Reciever', 'Always Defect'): 98,
+    ('Tit-For-Tat', 'Master'): 101,
+    ('Tit-For-Tat', 'Slave'): 101,
+    ('Tit-For-Tat', 'Helper'): 300,
+    ('Tit-For-Tat', 'Reciever'): 299,
+    ('Tit-For-Tat', 'Tit-For-Tat'): 300,
+    ('Tit-For-Tat', 'Always Defect'): 99,
+    ('Always Defect', 'Master'): 104,
+    ('Always Defect', 'Slave'): 104,
+    ('Always Defect', 'Helper'): 108,
+    ('Always Defect', 'Reciever'): 108,
+    ('Always Defect', 'Tit-For-Tat'): 104,
+    ('Always Defect', 'Always Defect'): 100
+}
 #Set the height and width of the grid
 height = 10 
 width = 10
