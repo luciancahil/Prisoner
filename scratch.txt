@@ -1,0 +1,61 @@
+Basics:
+
+New model: The giver and reciever.
+
+To others: Tit for tat
+
+2 givers: "Default". Both in good health. No need to do anything. Always cooperate.
+
+1 giver, 1 reciever. One friend is super busy or in bad health. Needs help from the other. The giver "agrees" to help, by which the reciever can defect, but the helper will still cooperate.
+
+2 recievers: both in bad health. Neither in a position to help. Just always cooperate.
+
+You only need 2 for tit-for-tat.
+
+VS Master and slave.
+
+Instead of handshake, the reciever will send out a "call for help". 
+
+[T, F, C, C, F]
+Master	: [T, F, T, T, F, C] -4
+Slave 	: [T, F, T, T, F, F] 0 
+Reciever: [F, T, T, T, F, F] +3
+
+Slaves alternate. Masters Cooperate.
+
+Reciever vs Master (master gets 3 on reciever)
+
+M: T F F F
+R: F T T F
+
+Vs Partner:
+Reciever is +7
+
+Vs other partner: (Master gets 3 on Reciever)
+2 + 3 + 1 + 1  	(Giver vs Master)
+3 + 0 + 0 + 1 	(Reciever vs slave)
+
+Wait. Does the pair win by 1 point?
+
+Okay. Pair beats everything. 2 Slaves lose to everything.
+
+Master + slaves beats everything except pair
+
+0.5 (Pair)
+
+2 Masters vs 2 Givers:
+Masters lose 2 against each other, compared to 2 givers.
+
+Master vs giver (nets 3)
+
+TFFF
+TTFF
+
+2 Slaves lose to everything.
+
+If there's a master, you win unless there's a pair
+
+
+Odds of master winning:
+
+0.49 + (0.5 * 0.51): (Odds of 2 slaves + odds of no pair AND one master).
