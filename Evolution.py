@@ -1,15 +1,14 @@
 import numpy as np
-from Prisoner import *
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 import random
 
 class Field:
-    def __init__(self, height, width):
+    def __init__(self, height, width, p = [0.5, 0.5]):
         self.height = height
         self.width = width
         # Initialize a 2D array of random colors (Red: 0, Blue:1)
-        self.grid = np.random.randint(low=0, high=2, size=(self.height, self.width))
+        self.grid = np.random.choice([0, 1], size=(self.height, self.width), p=p)
         # use this to correspond the ints with an actual policy
         
         
@@ -77,12 +76,11 @@ class Field:
 
     
 def run_evolution(field, num_iterations):
-    success_array = field.get_random_success_array() 
     im = field.plot()
     plt.title("Iteration: 0")
     for i in range(num_iterations):
+        success_array = field.get_random_success_array() 
         field.update(success_array)
-        success_array = field.get_random_success_array()  # Replace with actual success calculation
         im.set_array(field.grid)
         plt.title(f"Iteration: {i+1}")
         plt.pause(0.5)
@@ -127,10 +125,10 @@ score_matrix = {
     ('Always Defect', 'Always Defect'): 100
 }
 #Set the height and width of the grid
-height = 10 
-width = 10
+height = 100
+width = 100
 num_iterations = 20
 #Create an instance of the field
-field = Field(height, width)
+field = Field(height, width, [0.1, 0.9])
 run_evolution(field, num_iterations)
 plt.show()
