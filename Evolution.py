@@ -100,6 +100,11 @@ def run_evolution(field, num_iterations):
         plt.title(f"Iteration: {i+1}")
         plt.pause(0.5)
 
+        first = field.grid[0][0]
+        count = sum(sum(field.grid == first))
+        if count == field.grid.flatten().size:
+            break
+
 
 score_matrix = {
     ('Master', 'Master'): 296,
@@ -142,7 +147,7 @@ score_matrix = {
 #Set the height and width of the grid
 height = 100
 width = 100
-num_iterations = 5
+num_iterations = 20
 #Create an instance of the field
 field = Field(height, width, [0.05, 0.95])
 run_evolution(field, num_iterations)
