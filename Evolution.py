@@ -24,6 +24,7 @@ class Field:
                 # Get neighbors and their indices
                 neighbors, neighbor_indices = self.get_neighbors(row, col)
 
+
                 # Find the indices of the most successful neighbors
                 most_success_indices = np.where(success_array[neighbor_indices] == success_array[neighbor_indices].max())[0]
                 most_success_colors = self.grid[neighbor_indices[most_success_indices] // self.width,
@@ -31,8 +32,8 @@ class Field:
   
                 opposite_colors = most_success_colors != current_color
                  
-                if np.count_nonzero(opposite_colors) == 1:
-                    # Change color if there is exactly one opposite color and no tie
+                if np.count_nonzero(opposite_colors) > 0:
+                    # Change color if there is at least one opposite color highest value
                     self.grid[row, col] = most_success_colors[np.argwhere(opposite_colors)][0]
 
     def get_neighbors(self, row, col):  # fix 2: corrected neighbor indices calculation
@@ -50,6 +51,19 @@ class Field:
 
     def get_random_success_array(self):
         return np.random.randint(low=0, high=100, size=(self.height, self.width)).flatten()
+    
+
+    def zero_wins(self):
+        flattened = self.grid.flatten()
+
+        for i, item in enumerate(flattened):
+            if item == 0:
+                flattened[i] = 1
+            else:
+                flattened[i] = 0
+            
+        
+        return flattened
     
     def get_prisonors_success_array(self):
         for row in range(self.height):
@@ -79,7 +93,8 @@ def run_evolution(field, num_iterations):
     im = field.plot()
     plt.title("Iteration: 0")
     for i in range(num_iterations):
-        success_array = field.get_random_success_array() 
+        dummy = field.get_random_success_array()
+        success_array = field.zero_wins() 
         field.update(success_array)
         im.set_array(field.grid)
         plt.title(f"Iteration: {i+1}")
@@ -127,8 +142,8 @@ score_matrix = {
 #Set the height and width of the grid
 height = 100
 width = 100
-num_iterations = 20
+num_iterations = 5
 #Create an instance of the field
-field = Field(height, width, [0.1, 0.9])
+field = Field(height, width, [0.05, 0.95])
 run_evolution(field, num_iterations)
 plt.show()
