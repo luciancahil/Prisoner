@@ -21,6 +21,15 @@ class Field:
 
                 self.population[index] = policies[self.grid[row][col]]
         
+    def pre_round(self):
+        for i, thing in enumerate(self.population):
+            if(thing == Master.name and random.uniform(0, 1) < 0.7):
+                self.population[i] = Slave.name
+            elif(thing == Helper.name and random.uniform(0, 1) < 0.5):
+                self.population[i] = Reciever.name
+            
+        
+        print(self.population)
         
     def update(self, success_array):
         # Flatten the success array for easier manipulation
@@ -47,8 +56,9 @@ class Field:
                     # Change color if there is at least one opposite color highest value
                     self.grid[row, col] = most_success_colors[np.argwhere(opposite_colors)][0]
                 
-
-                self.population[index] = self.policies[self.grid[row][col]]
+                # don't turn a slave into a master:
+                if not (self.population[index] == Slave.name and self.policies[self.grid[row][col]]== Master.name):
+                    self.population[index] = self.policies[self.grid[row][col]]
 
     def get_neighbors(self, row, col):  # fix 2: corrected neighbor indices calculation
         neighbors = []
@@ -104,11 +114,6 @@ class Field:
                 # Current color of the square
                 current_color = self.grid[row, col]  # fix 1: using tuple to access array element
     
-    def preRound(self):
-        for row in range(self.height):
-            for col in range(self.width):
-                current_color = self.grid[row, col]
-                
 
     def plot(self):
         fig, ax = plt.subplots()
@@ -125,6 +130,7 @@ def run_evolution(field, num_iterations):
     im = field.plot()
     plt.title("Iteration: 0")
     for i in range(num_iterations):
+        field.pre_round()
         dummy = field.get_random_success_array()
         success_array = field.prisoners_game() 
         field.update(success_array)
@@ -182,9 +188,9 @@ width = 100
 num_iterations = 20
 
 # which index is what policy
-policies = [TitForTat.name, Master.name]
+policies = [Helper.name, TitForTat.name]
 
 #Create an instance of the field
-field = Field(height, width, [0.5, 0.5], policies)
+field = Field(height, width, [0.1, 0.9], policies)
 run_evolution(field, num_iterations)
 plt.show()
