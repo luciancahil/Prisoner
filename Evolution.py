@@ -12,6 +12,14 @@ class Field:
         # Initialize a 2D array of random colors (Red: 0, Blue:1)
         self.grid = np.random.choice([0, 1], size=(self.height, self.width), p=p)
         # use this to correspond the ints with an actual policy
+
+        self.population = [None]*(width*height)
+
+        for row in range(self.height):
+            for col in range(self.width):
+                index = row * self.width + col
+
+                self.population[index] = policies[self.grid[row][col]]
         
         
     def update(self, success_array):
@@ -38,6 +46,9 @@ class Field:
                 if np.count_nonzero(current_colors) == 0:
                     # Change color if there is at least one opposite color highest value
                     self.grid[row, col] = most_success_colors[np.argwhere(opposite_colors)][0]
+                
+
+                self.population[index] = self.policies[self.grid[row][col]]
 
     def get_neighbors(self, row, col):  # fix 2: corrected neighbor indices calculation
         neighbors = []
@@ -76,11 +87,11 @@ class Field:
                 index = row * self.width + col
 
                 neighbors, neighbor_indices = self.get_neighbors(row, col)
-                cur = self.policies[self.grid[row][col]]
+                cur = self.population[index]
                 score = 0
 
-                for neighbour in neighbors:
-                    score += score_matrix[(cur, self.policies[neighbour])]
+                for neighbour in neighbor_indices:
+                    score += score_matrix[(cur, self.population[neighbour])]
                 
                 flattened[index] = score / len(neighbors)
         
@@ -171,10 +182,9 @@ width = 100
 num_iterations = 20
 
 # which index is what policy
-policies = [Master.name, Slave.name]
-
+policies = [TitForTat.name, Master.name]
 
 #Create an instance of the field
-field = Field(height, width, [0.1, 0.9], policies)
+field = Field(height, width, [0.5, 0.5], policies)
 run_evolution(field, num_iterations)
 plt.show()
