@@ -16,7 +16,6 @@ class Field:
         
     def update(self, success_array):
         # Flatten the success array for easier manipulation
-        print(success_array)
         success_array = np.array(success_array).flatten()
         for row in range(self.height):
             for col in range(self.width):
@@ -77,11 +76,11 @@ class Field:
                 index = row * self.width + col
 
                 neighbors, neighbor_indices = self.get_neighbors(row, col)
-                cur = self.policies[self.grid[row][col]].name
+                cur = self.policies[self.grid[row][col]]
                 score = 0
 
                 for neighbour in neighbors:
-                    score += score_matrix[(cur, self.policies[neighbour].name)]
+                    score += score_matrix[(cur, self.policies[neighbour])]
                 
                 flattened[index] = score / len(neighbors)
         
@@ -172,10 +171,10 @@ width = 100
 num_iterations = 20
 
 # which index is what policy
-policies = [AlwaysDefect, TitForTat]
+policies = [Master.name, Slave.name]
 
 
 #Create an instance of the field
-field = Field(height, width, [0.9, 0.1], policies)
+field = Field(height, width, [0.1, 0.9], policies)
 run_evolution(field, num_iterations)
 plt.show()
