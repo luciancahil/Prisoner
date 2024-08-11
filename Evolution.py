@@ -31,8 +31,9 @@ class Field:
                                       neighbor_indices[most_success_indices] % self.width]
   
                 opposite_colors = most_success_colors != current_color
+                current_colors = most_success_colors == current_color
                  
-                if np.count_nonzero(opposite_colors) > 0:
+                if np.count_nonzero(current_colors) == 0:
                     # Change color if there is at least one opposite color highest value
                     self.grid[row, col] = most_success_colors[np.argwhere(opposite_colors)][0]
 
@@ -149,6 +150,6 @@ height = 100
 width = 100
 num_iterations = 20
 #Create an instance of the field
-field = Field(height, width, [0.05, 0.95])
+field = Field(height, width, [0.01, 0.99])
 run_evolution(field, num_iterations)
 plt.show()
