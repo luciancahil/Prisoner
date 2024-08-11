@@ -2,11 +2,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 import random
+from Prisoner import *
 
 class Field:
-    def __init__(self, height, width, p = [0.5, 0.5]):
+    def __init__(self, height, width, p, policies):
         self.height = height
         self.width = width
+        self.policies = policies
         # Initialize a 2D array of random colors (Red: 0, Blue:1)
         self.grid = np.random.choice([0, 1], size=(self.height, self.width), p=p)
         # use this to correspond the ints with an actual policy
@@ -14,6 +16,7 @@ class Field:
         
     def update(self, success_array):
         # Flatten the success array for easier manipulation
+        print(success_array)
         success_array = np.array(success_array).flatten()
         for row in range(self.height):
             for col in range(self.width):
@@ -66,6 +69,24 @@ class Field:
         
         return flattened
     
+    def prisoners_game(self):
+        flattened = self.grid.flatten()
+
+        for row in range(self.height):
+            for col in range(self.width):
+                index = row * self.width + col
+
+                neighbors, neighbor_indices = self.get_neighbors(row, col)
+                cur = self.policies[self.grid[row][col]].name
+                score = 0
+
+                for neighbour in neighbors:
+                    score += score_matrix[(cur, self.policies[neighbour].name)]
+                
+                flattened[index] = score / len(neighbors)
+        
+        return flattened
+    
     def get_prisonors_success_array(self):
         for row in range(self.height):
             for col in range(self.width):
@@ -95,7 +116,7 @@ def run_evolution(field, num_iterations):
     plt.title("Iteration: 0")
     for i in range(num_iterations):
         dummy = field.get_random_success_array()
-        success_array = field.zero_wins() 
+        success_array = field.prisoners_game() 
         field.update(success_array)
         im.set_array(field.grid)
         plt.title(f"Iteration: {i+1}")
@@ -149,7 +170,12 @@ score_matrix = {
 height = 100
 width = 100
 num_iterations = 20
+
+# which index is what policy
+policies = [AlwaysDefect, TitForTat]
+
+
 #Create an instance of the field
-field = Field(height, width, [0.01, 0.99])
+field = Field(height, width, [0.9, 0.1], policies)
 run_evolution(field, num_iterations)
 plt.show()

@@ -6,6 +6,7 @@ class Policy:
     Base class for prisoner's dilemma policies.
     Subclasses should implement the get_action method.
     """
+    name = None  # Class attribute
 
     def __init__(self, name):
         self.history = []
@@ -20,12 +21,17 @@ class Policy:
     def update(self):
         pass
 
+    def get_name():
+        return 
+
 
 class Helper(Policy):
     """
     A policy that mimics tit-for-tat, unless it meets a friend in need.
     Then it always cooperates
     """
+    name = "Helper"  # Class attribute
+
     def __init__(self):
         super().__init__("Helper")
         self.role = "helper"
@@ -58,6 +64,9 @@ class Reciever(Policy):
     A policy that sends out a call for help.
     Will defect against helper, tit for tat otherwise
     """
+
+    name = "Reciever"  # Class attribute
+
     def __init__(self):
         super().__init__("Reciever")
         self.role = "helper"
@@ -100,6 +109,7 @@ class Reciever(Policy):
                     return "C"
 
 class Master(Policy):
+    name = "Master"
     def __init__(self):
         super().__init__("Master")
         self.role = "Master"
@@ -136,6 +146,7 @@ class Master(Policy):
                 return "C"
             
 class Slave(Policy):
+    name = "Slave"
     def __init__(self):
         super().__init__("Slave")
         self.role = "Slave"
@@ -170,6 +181,7 @@ class TitForTat(Policy):
     A policy that starts by cooperating and then
     imitates the opponent's previous action.
     """
+    name = "Tit-For-Tat"
     def __init__(self):
         super().__init__("Tit-For-Tat")
 
@@ -182,6 +194,7 @@ class TitForTat(Policy):
 
 class AlwaysDefect(Policy):
     """A policy that always defects."""
+    name = "Always Defect"
     def __init__(self):
         super().__init__("Always Defect")
 
@@ -227,27 +240,27 @@ def prisoner_dilemma_arena(game_length, policy1, policy2):
 # Example usage:
 
 
+def print_dict():
+    policies = [Master, Slave, Helper, Reciever, TitForTat, AlwaysDefect]
 
-policies = [Master, Slave, Helper, Reciever, TitForTat, AlwaysDefect]
+    lines = []
 
-lines = []
+    for i in range(len(policies)):
+        for j in range(len(policies)):
 
-for i in range(len(policies)):
-    for j in range(len(policies)):
+            game_length = 100
+            policy1 = policies[i]()
+            policy2 = policies[j]()
 
-        game_length = 100
-        policy1 = policies[i]()
-        policy2 = policies[j]()
+            policy1_score, policy2_score = prisoner_dilemma_arena(
+                game_length, policy1, policy2
+            )
 
-        policy1_score, policy2_score = prisoner_dilemma_arena(
-            game_length, policy1, policy2
-        )
+            print(f"{policy1.name} score: {policy1_score}")
+            print(f"{policy2.name} score: {policy2_score}")
 
-        print(f"{policy1.name} score: {policy1_score}")
-        print(f"{policy2.name} score: {policy2_score}")
-
-        lines.append("('{}', '{}'): {},".format(policy1.name, policy2.name, policy1_score))
-        
-for line in lines:
-    print(line)
+            lines.append("('{}', '{}'): {},".format(policy1.name, policy2.name, policy1_score))
+            
+    for line in lines:
+        print(line)
 
