@@ -27,6 +27,8 @@ class Field:
                 self.population[i] = Slave.name
             elif(thing == Helper.name and random.uniform(0, 1) < 0.5):
                 self.population[i] = Reciever.name
+            elif(thing == Reciever.name and random.uniform(0, 1) < 0.5):
+                self.population[i] = Helper.name
             
         
         print(self.population)
@@ -56,9 +58,7 @@ class Field:
                     # Change color if there is at least one opposite color highest value
                     self.grid[row, col] = most_success_colors[np.argwhere(opposite_colors)][0]
                 
-                # don't turn a slave into a master:
-                if not (self.population[index] == Slave.name and self.policies[self.grid[row][col]]== Master.name):
-                    self.population[index] = self.policies[self.grid[row][col]]
+                self.population[index] = self.policies[self.grid[row][col]]
 
     def get_neighbors(self, row, col):  # fix 2: corrected neighbor indices calculation
         neighbors = []
@@ -185,12 +185,12 @@ score_matrix = {
 #Set the height and width of the grid
 height = 100
 width = 100
-num_iterations = 20
+num_iterations = 100
 
 # which index is what policy
-policies = [Helper.name, TitForTat.name]
+policies = [Helper.name, Master.name]
 
 #Create an instance of the field
-field = Field(height, width, [0.1, 0.9], policies)
+field = Field(height, width, [0.5, 0.5], policies)
 run_evolution(field, num_iterations)
 plt.show()
